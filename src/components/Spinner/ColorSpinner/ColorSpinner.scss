@@ -1,0 +1,26 @@
+#DGR-ColorSpinner {
+    border: 5px solid var(--mode) ;
+    border-top-color: var(--color);
+    border-radius: 50%;
+    animation: spin 1.3s linear infinite;
+  }
+
+  .DGR-ColorSpinner-smallSize{
+    width: 20px;
+    height: 20px;
+  }
+
+  .DGR-ColorSpinner-mediumSize{
+    width: 25px;
+    height: 25px;
+  }
+
+  .DGR-ColorSpinner-largeSize{
+    width: 30px;
+    height: 30px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
