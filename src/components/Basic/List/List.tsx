@@ -73,6 +73,10 @@ export class List extends Component<MyClassComponentProps, MyClassComponentState
               let newData = this.dataStock.slice(this.state.loadedData.length, (this.state.loadedData.length+this.state.loadingSize+1))
               this.setState({loadedData : [...this.state.loadedData, ...newData], isLoading: false});
               return;
+            }else{
+              let newData = this.dataStock.slice(this.state.loadedData.length, this.dataStock.length)
+              this.setState({loadedData : [...this.state.loadedData,...newData], isLoading: false});
+              return;
             }
          }
   

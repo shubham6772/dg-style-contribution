@@ -24,7 +24,7 @@ const App = () => {
         dataRequired={()=>{
           setTimeout(()=>{
             if(!datCompleted){
-              setList((prev)=>[...prev, 14, 15])
+              setList((prev)=>[...prev, 14, 15,16,17,18,19])
               setDataCompleted(true)
             }else{
                setend(true)
