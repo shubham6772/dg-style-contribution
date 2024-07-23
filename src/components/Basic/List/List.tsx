@@ -54,7 +54,8 @@ export class List extends Component<MyClassComponentProps, MyClassComponentState
       }
 
       if(this.props.isDataEnded != prevProps.isDataEnded){
-        this.setState({isDataEnded : this.props.isDataEnded, isLoading : false})
+        this.setState({isDataEnded : this.props.isDataEnded})
+        this.loadMoreData();
       }
 
       if(this.props.hideEndMessageComponent != prevProps.hideEndMessageComponent){
@@ -65,18 +66,22 @@ export class List extends Component<MyClassComponentProps, MyClassComponentState
 
   private loadMoreData = () => {
      setTimeout(() => {
-     this.setState({isLoading : true})
-     if(this.dataStock.length > this.state.loadedData.length){
-        if(this.dataStock.length >= (this.state.loadedData.length + this.state.loadingSize)){  
-          let newData = this.dataStock.slice(this.state.loadedData.length, (this.state.loadedData.length+this.state.loadingSize))
-          this.setState({loadedData : [...this.state.loadedData, ...newData], isLoading: false});
-          return;
+        if(!this.state.isDataEnded){
+          this.setState({isLoading : true})
+          if(this.dataStock.length > this.state.loadedData.length){
+            if(this.dataStock.length >= (this.state.loadedData.length + this.state.loadingSize)){  
+              let newData = this.dataStock.slice(this.state.loadedData.length, (this.state.loadedData.length+this.state.loadingSize+1))
+              this.setState({loadedData : [...this.state.loadedData, ...newData], isLoading: false});
+              return;
+            }
+         }
+  
+          (!this.state.isDataEnded) && this.props.dataRequired();
+          this.initialDataRendering = false;
+        }else{
+          this.setState({isLoading : false});
         }
-     }
-
-     !this.state.isDataEnded && this.props.dataRequired();
-     this.initialDataRendering = false;
-     },(this.props.delay || 200));
+    },(this.props.delay || 200));
 
   }
 
@@ -93,7 +98,6 @@ export class List extends Component<MyClassComponentProps, MyClassComponentState
 
      this.observer = new IntersectionObserver((entries) => {
        if(entries[0].isIntersecting && !this.state.isLoading){
-        console.log("here")
            this.loadMoreData();
        }
 
@@ -120,8 +124,8 @@ export class List extends Component<MyClassComponentProps, MyClassComponentState
             )
           })
         }
-        {(this.state.isLoading && !this.state.isDataEnded) && <div ref={(ref)=>this.loadingRef = ref} >{(this.props.loaderComponent && this.props.loaderComponent()) ||  "loading..."}</div>}
         {(!this.state.isLoading && this.state.isDataEnded && !this.props.hideEndMessageComponent) && <div>{(this.props.endMessageComponent && this.props.endMessageComponent()) || "List Ended..."}</div>}
+         <div className={(this.state.isDataEnded && !this.state.isLoading) ? "DGR-hide-loader" : "DGR-show-loader"} ref={(ref)=>this.loadingRef = ref} >{(this.props.loaderComponent && this.props.loaderComponent()) ||   "loading..."}</div>
       </div>
     );
   }

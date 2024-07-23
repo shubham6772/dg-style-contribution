@@ -11,6 +11,7 @@ const App = () => {
 
   const [list, setList] = useState([0,1,2,3,4,5,6,7,8,9,10,11,12,13]);
   const[end, setend] = useState(false);
+  const[datCompleted, setDataCompleted] = useState(false)
 
   return (
     <>
@@ -21,8 +22,15 @@ const App = () => {
       <List 
         data={list}
         dataRequired={()=>{
-          setList((prev)=>[...prev, 35,3,4,5,6,10000000000])
-          setend(true);
+          setTimeout(()=>{
+            if(!datCompleted){
+              setList((prev)=>[...prev, 14, 15])
+              setDataCompleted(true)
+            }else{
+               setend(true)
+            }
+          },2000)
+
         }}
         renderItem={(item : any, index : any)=>{
               return(
@@ -34,6 +42,7 @@ const App = () => {
         }}
         loadingSize={5}
         isDataEnded={end}
+        hideEndMessageComponent={false}
         loaderComponent={()=><div><ColorSpinner/></div>}
       />
     </>
@@ -42,5 +51,3 @@ const App = () => {
   
 
 export default App
-
-//is data ended need to be fixed
